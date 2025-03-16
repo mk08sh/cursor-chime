@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  reactStrictMode: true,
+  experimental: {
+    optimizeCss: true,
+  },
   typescript: {
     // We handle AudioContext errors in the code
     ignoreBuildErrors: true
@@ -8,8 +11,7 @@ const nextConfig = {
   eslint: {
     // We've fixed the ESLint errors locally, disable for production build
     ignoreDuringBuilds: true
-  },
-  reactStrictMode: true
+  }
 };
 
 export default nextConfig; 

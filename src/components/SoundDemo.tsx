@@ -6,87 +6,85 @@ import audioEngine from '@/utils/audioEngine';
 
 export default function SoundDemo() {
   const [selectedMelody, setSelectedMelody] = useState<Melody>(MELODIES[0]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlayingNote, setIsPlayingNote] = useState(false);
+  const [isPlayingMelody, setIsPlayingMelody] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const playNote = async () => {
-    if (!audioEngine) return;
-    setIsPlaying(true);
-    await audioEngine.playNote(selectedMelody);
-    setIsPlaying(false);
+  const playNote = () => {
+    if (!audioEngine || !selectedMelody.notes.length) return;
+    setIsPlayingNote(true);
+    audioEngine.playNote(selectedMelody);
+    setTimeout(() => setIsPlayingNote(false), selectedMelody.notes[0].duration * 1000);
   };
 
-  const playMelody = async () => {
-    if (!audioEngine) return;
-    setIsPlaying(true);
-    await audioEngine.playMelody(selectedMelody);
-    setIsPlaying(false);
+  const playMelody = () => {
+    if (!audioEngine || !selectedMelody.notes.length) return;
+    setIsPlayingMelody(true);
+    audioEngine.playMelody(selectedMelody);
+    const totalDuration = selectedMelody.notes.reduce((sum, note) => sum + note.duration, 0);
+    setTimeout(() => setIsPlayingMelody(false), totalDuration * 1000);
   };
 
   if (!isClient) {
-    return null; // Don't render anything during SSR
+    return null;
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 space-y-8">
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-center">Sound Notification Demo</h1>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Select Melody
-          </label>
-          <select
-            className="w-full p-2 border rounded-md bg-white"
-            value={selectedMelody.id}
-            onChange={(e) => {
-              const melody = MELODIES.find(m => m.id === e.target.value);
-              if (melody) setSelectedMelody(melody);
-            }}
-          >
+    <div className="max-w-2xl mx-auto">
+      <div className="space-y-6">
+        <div className="bg-question-block p-6 rounded-lg border-4 border-black shadow-mario">
+          <div className="text-center font-mario text-2xl mb-6">
+            SELECT MELODY STYLE
+          </div>
+          <div className="space-y-3">
             {MELODIES.map((melody) => (
-              <option key={melody.id} value={melody.id}>
-                {melody.name}
-              </option>
+              <button
+                key={melody.id}
+                onClick={() => setSelectedMelody(melody)}
+                className={`w-full p-4 bg-mushroom-beige border-4 border-black rounded-lg font-mono flex justify-between items-center
+                  ${selectedMelody.id === melody.id ? 'bg-white' : 'hover:bg-white'}`}
+              >
+                <span className="flex items-center">
+                  {selectedMelody.id === melody.id && (
+                    <span className="w-3 h-3 bg-mario-red rounded-full mr-3" />
+                  )}
+                  {melody.name}
+                </span>
+                <span>{melody.notes.length} NOTES</span>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           <button
             onClick={playNote}
-            disabled={isPlaying}
-            className={`p-4 rounded-lg text-white text-center transition-all
-              ${isPlaying 
+            disabled={isPlayingNote || isPlayingMelody}
+            className={`p-4 rounded-lg font-mario text-white border-4 border-black shadow-mario transition-all
+              ${isPlayingNote 
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'
+                : 'bg-mario-red hover:brightness-110 active:translate-y-1 active:shadow-none'
               }`}
           >
-            Play Next Note
+            SINGLE TASK CHIME
           </button>
 
           <button
             onClick={playMelody}
-            disabled={isPlaying}
-            className={`p-4 rounded-lg text-white text-center transition-all
-              ${isPlaying
+            disabled={isPlayingNote || isPlayingMelody}
+            className={`p-4 rounded-lg font-mario text-white border-4 border-black shadow-mario transition-all
+              ${isPlayingMelody
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-green-500 hover:bg-green-600 active:bg-green-700'
+                : 'bg-pipe-green hover:brightness-110 active:translate-y-1 active:shadow-none'
               }`}
           >
-            Play Full Melody
+            PROJECT COMPLETE
           </button>
         </div>
-
-        {isPlaying && (
-          <div className="text-center text-sm text-gray-500">
-            Playing sound...
-          </div>
-        )}
       </div>
     </div>
   );
