@@ -14,19 +14,40 @@ export default function SoundDemo() {
     setIsClient(true);
   }, []);
 
-  const playNote = () => {
-    if (!audioEngine || !selectedMelody.notes.length) return;
+  const playNote = async () => {
+    if (!audioEngine || !selectedMelody.notes.length || isPlayingNote || isPlayingMelody) return;
+    
     setIsPlayingNote(true);
-    audioEngine.playNote(selectedMelody);
-    setTimeout(() => setIsPlayingNote(false), selectedMelody.notes[0].duration * 1000);
+    const duration = await audioEngine.playNote(selectedMelody);
+    
+    // Use a more precise timing mechanism
+    const endTime = performance.now() + duration;
+    const checkCompletion = () => {
+      if (performance.now() >= endTime) {
+        setIsPlayingNote(false);
+      } else {
+        requestAnimationFrame(checkCompletion);
+      }
+    };
+    requestAnimationFrame(checkCompletion);
   };
 
-  const playMelody = () => {
-    if (!audioEngine || !selectedMelody.notes.length) return;
+  const playMelody = async () => {
+    if (!audioEngine || !selectedMelody.notes.length || isPlayingNote || isPlayingMelody) return;
+    
     setIsPlayingMelody(true);
-    audioEngine.playMelody(selectedMelody);
-    const totalDuration = selectedMelody.notes.reduce((sum, note) => sum + note.duration, 0);
-    setTimeout(() => setIsPlayingMelody(false), totalDuration * 1000);
+    const duration = await audioEngine.playMelody(selectedMelody);
+    
+    // Use a more precise timing mechanism
+    const endTime = performance.now() + duration;
+    const checkCompletion = () => {
+      if (performance.now() >= endTime) {
+        setIsPlayingMelody(false);
+      } else {
+        requestAnimationFrame(checkCompletion);
+      }
+    };
+    requestAnimationFrame(checkCompletion);
   };
 
   if (!isClient) {
