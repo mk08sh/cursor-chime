@@ -37,7 +37,7 @@ export default function SoundDemo() {
     <div className="max-w-2xl mx-auto">
       <div className="space-y-6">
         <div className="bg-question-block p-6 rounded-lg border-4 border-black shadow-mario">
-          <div className="text-center font-mario text-2xl mb-6">
+          <div className="text-center font-mario text-2xl mb-6 text-black">
             SELECT MELODY STYLE
           </div>
           <div className="space-y-3">
@@ -45,7 +45,7 @@ export default function SoundDemo() {
               <button
                 key={melody.id}
                 onClick={() => setSelectedMelody(melody)}
-                className={`w-full p-4 bg-mushroom-beige border-4 border-black rounded-lg font-mono flex justify-between items-center
+                className={`w-full p-4 bg-mushroom-beige border-4 border-black rounded-lg font-mono flex justify-between items-center text-black
                   ${selectedMelody.id === melody.id ? 'bg-white' : 'hover:bg-white'}`}
               >
                 <span className="flex items-center">
