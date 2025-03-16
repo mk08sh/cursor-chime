@@ -16,7 +16,7 @@ export default function SoundDemo() {
   const playNote = async () => {
     if (!audioEngine) return;
     setIsPlaying(true);
-    await audioEngine.playNote(selectedMelody.singleNote);
+    await audioEngine.playNote(selectedMelody);
     setIsPlaying(false);
   };
 
@@ -66,7 +66,7 @@ export default function SoundDemo() {
                 : 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'
               }`}
           >
-            Play Single Note
+            Play Next Note
           </button>
 
           <button
