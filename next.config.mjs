@@ -9,10 +9,7 @@ const nextConfig = {
     // We've fixed the ESLint errors locally, disable for production build
     ignoreDuringBuilds: true
   },
-  // Optimize for production
-  swcMinify: true,
-  reactStrictMode: true,
-  poweredByHeader: false
+  reactStrictMode: true
 };
 
 export default nextConfig; 
