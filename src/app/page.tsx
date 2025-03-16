@@ -8,7 +8,7 @@ export default function Home() {
           <h1 className="text-4xl font-mario text-mario-red text-center mb-6">
             CURSOR CHIME DEMO
           </h1>
-          <div className="font-mono space-y-2">
+          <div className="font-mono space-y-2 text-black">
             <p><span className="font-bold">Single task chime:</span> Plays a single note part of a bigger melody</p>
             <p><span className="font-bold">Project Deployed:</span> Entire Melody Plays</p>
           </div>
