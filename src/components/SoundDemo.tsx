@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { MELODIES, Melody } from '@/types/audio';
-import { audioEngine } from '@/utils/audioEngine';
+import audioEngine from '@/utils/audioEngine';
 
 export default function SoundDemo() {
   const [selectedMelody, setSelectedMelody] = useState<Melody>(MELODIES[0]);
