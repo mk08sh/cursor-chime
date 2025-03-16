@@ -17,7 +17,7 @@ Visit the live demo at: [Cursor Chime Demo](https://cursor-chime.vercel.app)
 
 ## Technologies Used
 
-- Next.js 15.2
+- Next.js 14.1
 - TypeScript
 - Web Audio API
 - Tailwind CSS
