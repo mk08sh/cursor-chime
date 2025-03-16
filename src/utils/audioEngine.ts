@@ -28,7 +28,7 @@ class AudioEngine {
     }
   }
 
-  async playNote(frequency: number, duration: number) {
+  async playNote(note: Note) {
     if (typeof window === 'undefined') return;
     
     this.ensureContext();
@@ -36,17 +36,17 @@ class AudioEngine {
 
     const oscillator = this.audioContext.createOscillator();
     oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(note.frequency, this.audioContext.currentTime);
     
     oscillator.connect(this.gainNode);
     
     // Add a slight fade in/out to prevent clicks
     this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
     this.gainNode.gain.linearRampToValueAtTime(0.5, this.audioContext.currentTime + 0.01);
-    this.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + duration);
+    this.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + note.duration);
 
     oscillator.start();
-    oscillator.stop(this.audioContext.currentTime + duration);
+    oscillator.stop(this.audioContext.currentTime + note.duration);
   }
 
   async playMelody(melody: Melody) {
@@ -59,7 +59,7 @@ class AudioEngine {
     
     for (const note of melody.notes) {
       setTimeout(() => {
-        this.playNote(note.frequency, note.duration);
+        this.playNote(note);
       }, currentTime * 1000);
       
       currentTime += note.duration;

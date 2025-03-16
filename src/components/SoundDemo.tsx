@@ -16,10 +16,7 @@ export default function SoundDemo() {
   const playNote = async () => {
     if (!audioEngine) return;
     setIsPlaying(true);
-    await audioEngine.playNote(
-      selectedMelody.singleNote.frequency,
-      selectedMelody.singleNote.duration
-    );
+    await audioEngine.playNote(selectedMelody.singleNote);
     setIsPlaying(false);
   };
 

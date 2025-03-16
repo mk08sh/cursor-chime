@@ -1,4 +1,3 @@
-import Image from "next/image";
 import SoundDemo from '@/components/SoundDemo';
 
 export default function Home() {
